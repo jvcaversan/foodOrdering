@@ -4,21 +4,27 @@ import { Stack, useLocalSearchParams } from "expo-router";
 import products from "@/assets/data/products";
 import { defaultPizzaImage } from "@/src/components/ProductsListItem";
 import Button from "@/src/components/Button";
+import { useCart } from "@/src/providers/CartProvider";
+import { PizzaSize } from "@/src/types";
 
-const sizes = ["P", "M", "G", "GG"];
+const sizes: PizzaSize[] = ["P", "M", "G", "GG"];
 
 const ProductDetailsScreen = () => {
   const { id } = useLocalSearchParams();
 
-  const [selectedSize, setSelectedSize] = useState("");
+  const { addItem } = useCart();
+  const [selectedSize, setSelectedSize] = useState<PizzaSize>("");
 
   const product = products.find((e) => e.id.toString() === id);
 
   const addToCart = () => {
-    if (!selectedSize || selectedSize === "") {
+    if (!selectedSize) {
       console.warn("Selecione um Tamanho");
+    }
+    if (!product) {
+      return;
     } else {
-      console.warn(`Adicionado Pizza ${product?.name} Tamanho`, selectedSize);
+      addItem(product, selectedSize);
     }
   };
 
