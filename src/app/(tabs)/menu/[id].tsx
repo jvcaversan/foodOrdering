@@ -1,15 +1,26 @@
-import { Image, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
 import { Stack, useLocalSearchParams } from "expo-router";
 import products from "@/assets/data/products";
 import { defaultPizzaImage } from "@/src/components/ProductsListItem";
+import Button from "@/src/components/Button";
 
 const sizes = ["P", "M", "G", "GG"];
 
 const ProductDetailsScreen = () => {
   const { id } = useLocalSearchParams();
 
+  const [selectedSize, setSelectedSize] = useState("");
+
   const product = products.find((e) => e.id.toString() === id);
+
+  const addToCart = () => {
+    if (!selectedSize || selectedSize === "") {
+      console.warn("Selecione um Tamanho");
+    } else {
+      console.warn(`Adicionado Pizza ${product?.name} Tamanho`, selectedSize);
+    }
+  };
 
   if (!product) {
     return <Text>Produto não encontrado!</Text>;
@@ -27,13 +38,27 @@ const ProductDetailsScreen = () => {
       <Text>Selecione o Tamanho</Text>
       <View style={styles.sizeContainer}>
         {sizes.map((size) => (
-          <View style={styles.sizeItem} key={size}>
+          <Pressable
+            onPress={() => {
+              setSelectedSize(size);
+            }}
+            style={[
+              styles.sizeItem,
+              {
+                backgroundColor:
+                  selectedSize === size ? "lightgreen" : "lightgray",
+              },
+            ]}
+            key={size}
+          >
             <Text style={styles.sizesText}>{size}</Text>
-          </View>
+          </Pressable>
         ))}
       </View>
 
       <Text style={styles.price}>R${product.price}</Text>
+
+      <Button text="Adicionar ao Carrinho" onPress={addToCart} />
     </View>
   );
 };
@@ -53,6 +78,7 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 18,
     fontWeight: "bold",
+    marginTop: "auto",
   },
   sizeContainer: {
     flexDirection: "row",
