@@ -13,7 +13,7 @@ type CartListItemProps = {
 };
 
 const CartListItem = ({ cartItem }: CartListItemProps) => {
-  const { updateQuantity } = useCart();
+  const { updateQuantity, deleteItem } = useCart();
   return (
     <View style={styles.container}>
       <Image
@@ -24,11 +24,20 @@ const CartListItem = ({ cartItem }: CartListItemProps) => {
       <View style={{ flex: 1 }}>
         <Text style={styles.title}>{cartItem.product.name}</Text>
         <View style={styles.subtitleContainer}>
-          <Text style={styles.price}>${cartItem.product.price.toFixed(2)}</Text>
+          <Text style={styles.price}>
+            R${cartItem.product.price.toFixed(2)}
+          </Text>
           <Text>Tamanho: {cartItem.size}</Text>
         </View>
       </View>
       <View style={styles.quantitySelector}>
+        <FontAwesome
+          onPress={() => deleteItem(cartItem.id)}
+          name="trash-o"
+          size={24}
+          color="gray"
+          style={{ padding: 5 }}
+        />
         <FontAwesome
           onPress={() => updateQuantity(cartItem.id, -1)}
           name="minus"

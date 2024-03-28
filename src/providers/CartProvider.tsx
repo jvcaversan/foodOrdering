@@ -7,6 +7,7 @@ type CartType = {
   addItem: (product: Product, size: CartItem["size"]) => void;
   updateQuantity: (itemId: string, amount: -1 | 1) => void;
   total: number;
+  deleteItem: (itemId: string) => void;
 };
 
 export const CartContext = createContext<CartType>({
@@ -14,13 +15,14 @@ export const CartContext = createContext<CartType>({
   addItem: () => {},
   updateQuantity: () => {},
   total: 0,
+  deleteItem: () => {},
 });
 
 const CartProvider = ({ children }: PropsWithChildren) => {
   const [items, setItems] = useState<CartItem[]>([]);
 
+  //se ja existir um item igual no carrinho, atualizar a quantidade
   const addItem = (product: Product, size: CartItem["size"]) => {
-    //se ja existir um item igual no carrinho, atualizar a quantidade
     const existingItem = items.find(
       (item) => item.product === product && item.size === size
     );
@@ -55,12 +57,21 @@ const CartProvider = ({ children }: PropsWithChildren) => {
   };
 
   // console.log(items);
+
+  //função para realizar os calculos dos valores dos pedidos.
   const total = items.reduce(
     (sum, item) => (sum += item.product.price * item.quantity),
     0
   );
+
+  const deleteItem = (itemId: string) => {
+    setItems(items.filter((item) => item.id !== itemId));
+  };
+
   return (
-    <CartContext.Provider value={{ items, addItem, updateQuantity, total }}>
+    <CartContext.Provider
+      value={{ items, addItem, updateQuantity, total, deleteItem }}
+    >
       {children}
     </CartContext.Provider>
   );
