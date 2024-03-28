@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import products from "@/assets/data/products";
@@ -25,7 +25,7 @@ const ProductDetailsScreen = () => {
 
   const addToCart = () => {
     if (!selectedSize) {
-      console.warn("Selecione um Tamanho");
+      Alert.alert("Selecione um Tamanho");
       return; // Retorna imediatamente se nenhum tamanho estiver selecionado
     }
 

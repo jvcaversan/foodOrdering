@@ -12,7 +12,7 @@ const CartScreen = () => {
   const router = useRouter();
 
   const backMenu = () => {
-    router.dismiss();
+    router.back();
     router.push("/(tabs)/menu");
   };
 
