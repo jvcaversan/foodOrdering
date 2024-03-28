@@ -13,7 +13,7 @@ const CartScreen = () => {
 
   const backMenu = () => {
     router.back();
-    router.push("/(tabs)/menu");
+    router.push("/(user)/menu");
   };
 
   const isCartEmpty = items.length === 0;
