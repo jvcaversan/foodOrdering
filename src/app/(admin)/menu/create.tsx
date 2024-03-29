@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   Pressable,
   StyleSheet,
@@ -74,6 +75,23 @@ const CreateProductScreen = () => {
     resetFields();
   };
 
+  const onDelete = () => {
+    Alert.alert("Deletado", "Produto removido com sucesso.");
+  };
+
+  const confirmDelete = () => {
+    Alert.alert("Confirme", "Você tem certeza que deseja deletar o produto?", [
+      {
+        text: "Cancelar",
+      },
+      {
+        text: "Deletar",
+        style: "destructive",
+        onPress: onDelete,
+      },
+    ]);
+  };
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -122,6 +140,11 @@ const CreateProductScreen = () => {
 
       <Text style={{ color: "red" }}>{errors}</Text>
       <Button text={isUpdating ? "Editar" : "Criar"} onPress={onSubmit} />
+      {isUpdating && (
+        <Text onPress={confirmDelete} style={styles.textButton}>
+          Deletar
+        </Text>
+      )}
     </View>
   );
 };
