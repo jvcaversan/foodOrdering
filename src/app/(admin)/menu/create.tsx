@@ -11,13 +11,16 @@ import Button from "@/src/components/Button";
 import { defaultPizzaImage } from "@/src/components/ProductsListItem";
 import Colors from "@/src/constants/Colors";
 import * as ImagePicker from "expo-image-picker";
-import { Stack } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 
 const CreateProductScreen = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [errors, setErrors] = useState("");
   const [image, setImage] = useState<string | null>(null);
+
+  const { id } = useLocalSearchParams();
+  const isUpdating = !!id;
 
   const resetFields = () => {
     setName(""), setPrice("");
@@ -40,12 +43,31 @@ const CreateProductScreen = () => {
     return true;
   };
 
+  const onSubmit = () => {
+    if (isUpdating) {
+      onUpdateCreate();
+    } else {
+      onCreate();
+    }
+  };
+
   const onCreate = () => {
     console.warn("Create a product: ", name, price);
 
     if (!validateInput()) {
       return;
     }
+
+    //salvar os valores no database
+
+    resetFields();
+  };
+
+  const onUpdateCreate = () => {
+    if (!validateInput()) {
+      return;
+    }
+    console.warn("Editando o Produto: ", name, price);
 
     //salvar os valores no database
 
@@ -69,7 +91,9 @@ const CreateProductScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: "Criar Produto" }} />
+      <Stack.Screen
+        options={{ title: isUpdating ? "Editar Produto" : "Criar Produto" }}
+      />
       <Image
         source={{ uri: image || defaultPizzaImage }}
         style={styles.image}
@@ -97,7 +121,7 @@ const CreateProductScreen = () => {
       />
 
       <Text style={{ color: "red" }}>{errors}</Text>
-      <Button text="Criar" onPress={onCreate} />
+      <Button text={isUpdating ? "Editar" : "Criar"} onPress={onSubmit} />
     </View>
   );
 };
