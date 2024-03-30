@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useState } from "react";
-import { Link, router, Stack } from "expo-router";
+import { Link, Stack } from "expo-router";
 import Button from "@/src/components/Button";
 import Colors from "@/src/constants/Colors";
 
@@ -28,6 +28,8 @@ const SignIn = () => {
         value={password}
         onChangeText={setPassword}
         style={styles.textInput}
+        placeholder=""
+        secureTextEntry
       />
 
       <Button text={"Efetuar Login"} onPress={onSubmit} />

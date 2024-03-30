@@ -29,6 +29,8 @@ const SignUp = () => {
         value={password}
         onChangeText={setPassword}
         style={styles.textInput}
+        placeholder=""
+        secureTextEntry
       />
 
       <Button text={"Fazer Cadastro"} onPress={onSubmit} />
