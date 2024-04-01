@@ -16,13 +16,17 @@ export type CartItem = {
 };
 
 export const OrderStatusList: OrderStatus[] = [
-  "Novo",
+  "Novo Pedido",
   "Preparando",
   "Em Entrega",
   "Entregue",
 ];
 
-export type OrderStatus = "Novo" | "Preparando" | "Em Entrega" | "Entregue";
+export type OrderStatus =
+  | "Novo Pedido"
+  | "Preparando"
+  | "Em Entrega"
+  | "Entregue";
 
 export type Order = {
   id: number;
