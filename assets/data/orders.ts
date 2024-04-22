@@ -80,6 +80,57 @@ const orders: Order[] = [
       },
     ],
   },
+
+  {
+    id: 23129,
+    created_at: now.subtract(1, "hour").toISOString(),
+    total: 31.4,
+    status: "Em Entrega",
+    user_id: "1",
+    order_items: [
+      {
+        id: 1,
+        order_id: 23129,
+        size: "M",
+        quantity: 2,
+        product_id: products[0].id,
+        products: products[0],
+      },
+      {
+        id: 2,
+        order_id: 23129,
+        size: "G",
+        quantity: 1,
+        product_id: products[1].id,
+        products: products[1],
+      },
+    ],
+  },
+  {
+    id: 23125,
+    created_at: now.subtract(1, "hour").toISOString(),
+    total: 31.4,
+    status: "Novo Pedido",
+    user_id: "1",
+    order_items: [
+      {
+        id: 1,
+        order_id: 23125,
+        size: "M",
+        quantity: 2,
+        product_id: products[0].id,
+        products: products[0],
+      },
+      {
+        id: 2,
+        order_id: 23125,
+        size: "G",
+        quantity: 1,
+        product_id: products[1].id,
+        products: products[1],
+      },
+    ],
+  },
 ];
 
 export default orders;
