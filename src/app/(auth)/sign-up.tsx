@@ -1,17 +1,28 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useState } from "react";
 import { Link, router, Stack } from "expo-router";
 import Button from "@/src/components/Button";
 import Colors from "@/src/constants/Colors";
+import { supabase } from "@/src/lib/supabase";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const onSubmit = () => {
-    console.warn("Cadastro Efetuado");
-    router.push("/sign-in");
-  };
+  async function signUpWithEmail() {
+    setLoading(true);
+    const { error } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+    });
+
+    if (error) {
+      Alert.alert(error.message);
+    } else Alert.alert("Conta criada com Sucesso!");
+
+    setLoading(false);
+  }
 
   return (
     <View style={styles.container}>
@@ -33,7 +44,11 @@ const SignUp = () => {
         secureTextEntry
       />
 
-      <Button text={"Fazer Cadastro"} onPress={onSubmit} />
+      <Button
+        text={loading ? "Criando Cadastro" : "Fazer Cadastro"}
+        disabled={loading}
+        onPress={signUpWithEmail}
+      />
 
       <Link href="/sign-in" style={styles.textButton}>
         Efetuar Login

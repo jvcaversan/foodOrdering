@@ -1,16 +1,41 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Alert,
+  AppState,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import React, { useState } from "react";
 import { Link, Stack } from "expo-router";
 import Button from "@/src/components/Button";
 import Colors from "@/src/constants/Colors";
+import { supabase } from "../../lib/supabase";
+
+AppState.addEventListener("change", (state) => {
+  if (state === "active") {
+    supabase.auth.startAutoRefresh();
+  } else {
+    supabase.auth.stopAutoRefresh();
+  }
+});
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const onSubmit = () => {
-    console.warn("Login Efetuado");
-  };
+  async function signInWithEmail() {
+    setLoading(true);
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
+
+    if (error) Alert.alert(error.message);
+    setLoading(false);
+  }
 
   return (
     <View style={styles.container}>
@@ -32,7 +57,11 @@ const SignIn = () => {
         secureTextEntry
       />
 
-      <Button text={"Efetuar Login"} onPress={onSubmit} />
+      <Button
+        text={loading ? "Efetuando Login" : "Efetuar Login"}
+        disabled={loading}
+        onPress={signInWithEmail}
+      />
 
       <Link href="/sign-up" style={styles.textButton}>
         Criar uma conta
