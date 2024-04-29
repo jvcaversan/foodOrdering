@@ -1,8 +1,17 @@
-import { FlatList } from "react-native";
-import products from "@/assets/data/products";
+import { ActivityIndicator, FlatList, Text } from "react-native";
 import ProductListItem from "@/src/components/ProductsListItem";
+import { useProductList } from "@/src/api/products";
 
 export default function MenuScreen() {
+  const { data: products, error, isLoading } = useProductList();
+
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
+
+  if (error) {
+    return <Text>Falha em buscar o produto</Text>;
+  }
   return (
     <FlatList
       data={products}
