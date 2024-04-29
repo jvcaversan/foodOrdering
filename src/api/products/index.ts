@@ -1,5 +1,3 @@
-import products from "@/assets/data/products";
-import { Product } from "./../../types";
 import { supabase } from "@/src/lib/supabase";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
